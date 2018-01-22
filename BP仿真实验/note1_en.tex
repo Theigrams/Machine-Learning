@@ -1,0 +1,254 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage[]{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\PassOptionsToPackage{hyphens}{url} % url is loaded by hyperref
+\usepackage[unicode=true]{hyperref}
+\hypersetup{
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+% set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+
+
+\date{}
+
+\begin{document}
+
+(\url{http://allthingsphi.com/blog/2016/12/01/structuring-a-renderer-phi-ray.html})
+
+\section{Learning Internal Representations by Error
+Propagation}\label{header-n3}
+
+\subsection{Motivation(s)}\label{header-n4}
+
+Whenever the similarity structure of the input and output patterns are
+very different, a neural network without internal (hidden)
+representations will be unable to perform the necessary mappings. An
+example of this is the XOR problem presented by Minsky and Papert.
+
+One solution to the XOR problem is to add an additional third input
+taking the value of one whenever the first two bits has a one. Another
+solution is to add a single hidden unit that feeds into the output unit,
+which makes the hidden unit functionally equivalent to another input
+unit.
+
+The delta rule (perceptron convergence procedure) is guaranteed to solve
+problems that do not need hidden units. The lack of such a guarantee for
+networks with hidden units have led to the development of
+
+\begin{itemize}
+\item
+  unsupervised learning rules that do not ensure appropriate hidden
+  units are learned,
+\item
+  hidden units with domain specific topology, and
+\item
+  a learning algorithm for Boltzmann machines using stochastic units.
+\end{itemize}
+
+\subsection{Proposed Solution(s)}\label{header-n21}
+
+The author proposes the generalized delta rule as an alternative
+learning procedure for multilayer feedforward neural networks with
+deterministic units. Given enough exemplars, the network will find a
+generalizable solution to a problem without specifying the actual
+program.
+
+Note that any number of weights in the network can be fixed. Error is
+still propagated as before, but the fixed weights are not modified.
+Furthermore, some output units might not receive inputs from other
+output units in earlier layers. Those other output units will receive
+two different kinds of error:
+
+\begin{itemize}
+\item
+  error from the direct comparison with some desired target, and
+\item
+  error backpropagated from units whose activation it affects.
+\end{itemize}
+
+The author asserts that the correct delta rule in this case is to add
+together the weight changes.
+
+\subsection{Evaluation(s)}\label{header-n35}
+
+The experiments demonstrate that the network learned an elegant solution
+to the following set of problems: XOR, parity bit, distributed
+representation encoding, palindrome detection, binary negation, and
+binary addition. However, the solution to binary addition failed to
+generalize half the time. This problem is different from the others in
+the sense that the hidden units are not equipotential, and adding an
+additional hidden unit avoids the bad configurations.
+
+Another simulation is the recognition of a T or C character independent
+of translation and rotation. The network consists of a grid of hidden
+units where each hidden unit has a receptive field over the input units
+(e.g. 3x3 pixels) that overlaps with other receptive fields. Each
+receptive field has the same shape and all hidden units feed into a
+single output unit. The system was able to recognize the entire set of
+eight patterns after being shown five to ten thousand examples.
+
+Note that the same learning rule applies to Sigma-Pi units. It also
+works on recurrent networks because for every recurrent network, there
+exists a feedforward network with identical behavior over a finite
+period of time. However, since feedforward networks must arrange the
+units into layers such that units do not influence units in the same or
+lower layers, the future states of a recurrent network must not affect
+past ones during the forward iteration. This strategy successfully
+addressed learning a shift-register and character sequence completion.
+
+There are two caveats with training networks using the generalized delta
+rule. Symmetry breaking needs to occur, possibly via random
+initialization, otherwise all hidden units connected directly to the
+output units will get identical error signals. The other issue is
+determining learning rate. One way to increase the learning rate without
+leading to oscillation is to include a momentum term, which serves to
+filter out high-frequency variations of the error-surface in the weight
+space.
+
+\subsection{Future Direction(s)}\label{header-n44}
+
+\begin{itemize}
+\item
+  Deep learning have only focused on supervising the final output layer.
+  How to use hierarchical labels to shorten the training time of a deep
+  net? These labels would be the target of intermediate hidden layers
+  and can be updated asynchronously i.e. for \(\alpha \in [0, 1]\)
+
+  \(\Delta_p w_{ji} \approx o^p_i f'_j\left( \text{net}^p_j \right) \left[ \alpha \left( o^p_j - t^p_j \right) + (1 - \alpha) \sum_k \delta^p_k w_{kj} \right].\)
+\item
+  How to use fixed weights as a mechanism to implement shrinking and
+  growing of a neural network i.e.
+  \href{http://allthingsphi.com/blog/2016/11/30/information-processing-in-dynamical-systems-foundations-of-harmony-theory.html}{adapt
+  an arbitrary network's topology}?
+\item
+  How to approximate backpropagation through time using
+  \href{http://allthingsphi.com/blog/2016/11/23/training-products-of-experts-by-minimizing-contrastive-divergence.html}{contrastive
+  divergence}?
+\end{itemize}
+
+\subsection{Question(s)}\label{header-n57}
+
+\begin{itemize}
+\item
+  How does the number of hidden units change the network's error
+  surface?
+\end{itemize}
+
+\subsection{Analysis}\label{header-n62}
+
+The error propagation scheme leads to solutions in virtually every
+experiment, but it is not guaranteed to find a solution.
+
+The encoding experiment illustrates that linear units can cover a much
+wider dynamic range and improves the overall network when used in
+combination with different activation functions. This seems to suggest
+the continuous nonlinear
+\href{http://allthingsphi.com/blog/2016/11/15/maxout-networks.html}{activation
+function itself should be learned}.
+
+The author claimed that the logistic function is a good activation
+function because the midpoint is at \(0.5\) and extreme values of
+\(\{ 0, 1 \}\) cannot be reached. However,
+\href{http://allthingsphi.com/blog/2016/11/09/efficient-backprop.html}{recent
+deep learning results} indicate that this function's vanishing gradient
+is very problematic.
+
+One interesting point that deserves more analysis is that the time to
+find the solution is reduced by increasing the number of hidden units.
+
+The proposed backpropagation through time scheme for recurrent networks
+makes one wonder whether the brain is performing a less memory intensive
+operation.
+
+\subsection{Notes}\label{header-n73}
+
+The generalized delta rule (a.k.a. backpropagation) is a supervised
+learning procedure for neural networks. The proposed error measure over
+pairs of input/output patterns is
+
+\(E = \sum_p E_p = \sum_p \frac{1}{2} \sum_j (t^p_j - o^p_j)^2\)
+
+where \(t^p_j\) is the target value (label) of the \(j\text{th}\) output
+unit for a given pattern \(p\), and \(o^p_j\) is the actual output
+produced by the presentation of input pattern \(p\).
+
+For each neuron \(j\), its output is defined as
+
+\(o^p_j = f_j\left( \text{net}^p_j \right) = f_j\left( \sum_{i \in \text{parent}(o_j)} w_{ji} o^p_i \right)\)
+
+where \(o_i = i_i\) if unit \(i\) is an input unit, and unit \(j\)`s
+activation function \(f_j\) is non-linear and differentiable.
+
+The change in error with respect to a weight \(w_{ji}\) is
+
+
+where
+
+\(\frac{\partial \text{net}^p_j}{\partial w_{ji}} = \frac{\partial}{\partial w_{ji}} \sum_{i \in \text{parent}(o_j)} w_{ji} o^p_i = o^p_i,\)
+
+\(\frac{\partial o^p_j}{\partial \text{net}^p_j} = \frac{\partial}{\partial \text{net}^p_j} f_j\left( \text{net}^p_j \right) = f'_j\left( \text{net}^p_j \right),\)
+
+and
+
+\(\frac{\partial E_p}{\partial o^p_j} = \frac{\partial}{\partial o^p_j} \frac{1}{2} \sum_j (t^p_j - o^p_j)^2 = o^p_j - t^p_j.\)
+
+When neuron \(j\) is not an output unit,
+
+
+
+Therefore,
+
+
+References
+
+\begin{quote}
+David E Rumelhart, Geoffrey E Hinton, and Ronald J Williams. Learning
+internal representations by error propagation. Technical Report, DTIC
+Document, 1985.
+\end{quote}
+
+\end{document}

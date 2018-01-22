@@ -1,2 +1,4 @@
 # Machine-Learning
-Some of the resources on the machine learning and my own note&amp;code
+-  CS294：中文翻译
+-  BP算法仿真实验
+-  ​

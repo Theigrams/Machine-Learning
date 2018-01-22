@@ -1,0 +1,41 @@
+\newpage
+\section{BP算法}
+\subsection{核心迭代公式}
+\begin{center}
+  \begin{minipage}{0.7\textwidth}
+    \begin{framed}
+      \centering
+      \textbf{前向传播的三个方程式}\label{backpropsummary}\\
+      \vspace{1.5ex}
+      \begin{tabular}{ll}
+        $\bm{z}^l=\bm{w}^l\bm{a}^{l-1}+\bm{b}^l$            & \hspace{2cm} \\[1.5ex]
+        $\bm{a}^l=\sigma\left(\bm{w}^l\bm{a}^{l-1}+\bm{b}^l\right)=\sigma(\bm{z}^l)$ & \hspace{2cm} \\[1.5ex]
+        $E=\text{Cost}(\bm{y},\bm{a}^L )$       & \hspace{2cm} \\[1.5ex]
+      
+      \end{tabular}
+    \end{framed}
+  \end{minipage}
+\end{center}
+
+我们记$\bm{\delta} ^l=\dfrac{\partial E}{\partial\bm{z}^l}$,则有:
+\begin{center}
+  \begin{minipage}{0.7\textwidth}
+    \begin{framed}
+      \centering
+      \textbf{反向传播的四个方程式}\label{backpropsummary}\\
+      \vspace{1.5ex}
+      \begin{tabular}{ll}
+        $\bm{\delta}^L = \dfrac{\partial E}{\partial\bm{a}^L}\odot\sigma'(\bm{z}^L)$            & \hspace{2cm} \\[1.5ex]
+        $\bm{\delta}^l = ((\bm{w}^{l+1})^T \bm{\delta}^{l+1}) \odot \sigma'(\bm{z}^l)$ & \hspace{2cm} \\[1.5ex]
+        $\dfrac{\partial E}{\partial \bm{b}^l} = \bm{\delta}^l$       & \hspace{2cm} \\[1.5ex]
+        $\dfrac{\partial E}{\partial \bm{w}^l} = \bm{\delta}^l(\bm{a}^{l-1})^T$ & \hspace{2cm}
+      \end{tabular}
+    \end{framed}
+  \end{minipage}
+\end{center}
+
+
+
+
+
+

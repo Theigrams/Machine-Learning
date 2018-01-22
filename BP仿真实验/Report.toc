@@ -1,0 +1,11 @@
+\contentsline {section}{\numberline {1}BP算法}{3}{section.1}
+\contentsline {subsection}{\numberline {1.1}核心迭代公式}{3}{subsection.1.1}
+\contentsline {section}{\numberline {2}XOR异或问题}{4}{section.2}
+\contentsline {subsection}{\numberline {2.1}二次函数代价函数}{4}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}交叉熵代价函数}{8}{subsection.2.2}
+\contentsline {subsection}{\numberline {2.3}动量项momentum}{10}{subsection.2.3}
+\contentsline {section}{\numberline {3}奇偶判别问题}{12}{section.3}
+\contentsline {section}{\numberline {4}编码问题}{14}{section.4}
+\contentsline {subsection}{\numberline {4.1}编码问题1}{14}{subsection.4.1}
+\contentsline {subsection}{\numberline {4.2}编码问题2}{15}{subsection.4.2}
+\contentsline {section}{\numberline {5}对称问题}{17}{section.5}
