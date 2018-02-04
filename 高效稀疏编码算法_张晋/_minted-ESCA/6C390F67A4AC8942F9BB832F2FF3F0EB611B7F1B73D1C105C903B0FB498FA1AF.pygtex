@@ -1,0 +1,8 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c}{\PYGZpc{}绘制HuberLoss函数的代码}
+\PYG{n}{diff} \PYG{p}{=} \PYG{n+nb}{linspace}\PYG{p}{(}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{4}\PYG{p}{,} \PYG{l+m+mi}{4}\PYG{p}{,} \PYG{l+m+mi}{1000}\PYG{p}{);}
+\PYG{n}{hold} \PYG{n}{on}
+\PYG{n}{plot}\PYG{p}{(}\PYG{n}{diff}\PYG{p}{,}\PYG{l+m+mf}{0.5}\PYG{o}{.*}\PYG{n}{diff}\PYG{o}{.\PYGZca{}}\PYG{l+m+mi}{2}\PYG{p}{)}
+\PYG{n}{plot}\PYG{p}{(}\PYG{n}{diff}\PYG{p}{,} \PYG{p}{(}\PYG{n+nb}{abs}\PYG{p}{(}\PYG{n}{diff}\PYG{p}{)}\PYG{o}{\PYGZlt{}}\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{o}{.*}\PYG{l+m+mf}{0.5}\PYG{o}{.*}\PYG{n}{diff}\PYG{o}{.\PYGZca{}}\PYG{l+m+mi}{2}\PYG{o}{+}\PYG{p}{(}\PYG{n+nb}{abs}\PYG{p}{(}\PYG{n}{diff}\PYG{p}{)}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{o}{.*}\PYG{p}{(}\PYG{n+nb}{abs}\PYG{p}{(}\PYG{n}{diff}\PYG{p}{)}\PYG{o}{\PYGZhy{}}\PYG{l+m+mf}{0.5}\PYG{p}{))}
+\PYG{n}{legend}\PYG{p}{(}\PYG{l+s}{\PYGZsq{}0.5x\PYGZca{}2\PYGZsq{}}\PYG{p}{,}\PYG{l+s}{\PYGZsq{}Huber loss\PYGZsq{}}\PYG{p}{)}
+\end{Verbatim}

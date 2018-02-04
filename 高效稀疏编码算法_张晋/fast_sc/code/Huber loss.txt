@@ -1,0 +1,5 @@
+diff = linspace(-4, 4, 1000);
+hold on
+plot(diff,0.5.*diff.^2)
+plot(diff, (abs(diff)<1).*0.5.*diff.^2+(abs(diff)>1).*(abs(diff)-0.5))
+legend('0.5x^2','Huber loss')

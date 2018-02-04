@@ -1,0 +1,17 @@
+FS_time =
+
+    3.4468
+
+sparsity_S = 0.131781
+
+Local minimum possible.
+
+fmincon stopped because the final change in function value relative to 
+its initial value is less than the default value of the function tolerance.
+
+<stopping criteria details>
+
+时间已过 0.035686 秒。
+epoch= 100, fobj= 4.706868, fresidue= 2.550905, fsparsity= 2.155964, took 46.22 seconds
+saving results ...
+saved as ../results/sc_L1_b128_beta0.4_20180203T233736.mat
